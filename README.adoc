@@ -60,7 +60,7 @@ image::4.PNG[Login,align="center"]
  $ make
  
 image::5.PNG[Login,align="center"]
-image::6.PNG[Login,align="center"]
+image::6.png[Login,align="center"]
 
  Tekrar source setlibpath kodunu çalıştıralım
 	   
