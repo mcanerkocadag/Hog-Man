@@ -1,0 +1,168 @@
+:imagesdir: resimler
+
+# Hierarchical Optimization for Pose Graphs  Kurulum Dokümantasyonu
+
+
+== Hog-Man Nedir?
+
+HOG-Man kısıtlama ağı için bir optimizasyon yaklaşımıdır. Oldukça etkili bir hata minimizasyon prosedürü sağlar. HOG-Man'ın 2D ve 3D versiyonu vardır.
+
+== Telif Hakkı ve Lisans Bilgileri
+
+HOG-Man, GNU Lesser General Public License 3.0 kapsamında lisanslanmıştır. Temel algoritmanın parçası olmayan graph_viewer, GNU Genel Kamu Lisansı 3.0 ile lisanslanmıştır.
+
+=== Harici Yazılım
+
+  EXTERNAL klasöründe bulunan yazılımlar :
+  http://www.cise.ufl.edu/research/sparse/CSparse/
+  http://www.libqglviewer.com/
+  
+=== Hızlı Kurulum Kılavuzu (Depo-repository- İle)
+
+GCC 4.4 derleyicisi:
+
+ sudo apt-get install -y gcc-4.4 gcc-4.4-multilib gcc-4.4-base gcc-4.4-locales g++-4.4 g++-4.4-multilib gfortran-4.4 gfortran-4.4-multilib cpp-4.4 libstdc++6-4.4-dev
+ 
+Derleyicilerin varsayılan sürümlerini 4.4 olarak değiştirelim. Bunun için aşağıdaki komutları tek tek giriniz.
+ 
+ sudo update-alternatives --remove-all cpp
+ 
+ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.4 10
+ 
+ sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.4 10
+ 
+ sudo update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-4.4 10
+ 
+ sudo update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-4.4 10
+ 
+Gerekli araç ve kütüphaneler
+ 
+ sudo apt-get install -y subversion qt3-dev-tools qt3-dev-tools-compat qt3-qtconfig liblapack3gf liblapack-dev libf2c2 libf2c2-dev libgmp10 libgmp3c2 libgmp3-dev libgfortran3 libblas3gf libblas-dev
+
+
+ $ svn co http://www.openslam.org/data/svn/hog-man
+ 
+image::1.PNG[Login,700,1200,align="center"]
+ 
+ $ cd hog-man/trunk/
+ $ bash               # if not already running
+ 
+image::2.PNG[Login,700,1200,align="center"]
+ 
+ $ source setlibpath
+ 
+image::3.PNG[Login,700,1200,align="center"]
+ 
+ $ ./configure
+ 
+image::4.PNG[Login,700,1200,align="center"]
+
+ $ make
+ 
+image::5.PNG[Login,700,1200,align="center"]
+image::6.PNG[Login,1200,1500,align="center"]
+
+ Tekrar source setlibpath kodunu çalıştıralım
+	   
+=== HOG-Man (2D) KULLANIMI
+
+  $ bin/hogman2d 
+  
+image::7.PNG[Login,700,1200,align="center"]
+  
+
+2B veri kümesini artımlı olarak işleme:: 
+
+ 
+ bin/hogman2d data/2D/w10000.graph
+ 
+image::8.PNG[Login,700,1200,align="center"]
+
+image::9.PNG[Login,1200,1200,align="center"]
+
+image::10.PNG[Login,1200,1200,align="center"]
+
+Optimize Edici'nin geçerli durumunu görselleştirmek için gnuplot'u kullanabilirsiniz. 
+
+Ayrıca, grafiğin durumunu bir dosyaya kaydetmiş oluruz. +
+
+  bin/hogman2d -o file-incrementally.graph -gnuout data/2D/w10000.graph | gnuplot
+
+image::11.PNG[Login,1200,1200,align="center"]
+
+image::12.PNG[Login,700,1200,align="center"]
+
+image::2dcikti.PNG[Login,300,300,align="center"]
+
+
+Bir 2D veri kümesinin toplu optimizasyonu::
+Bir veri kümesini çevrimdışı çalıştırmak için +
+
+ bin/hogman2d -gnuout -batch -chol file-incrementally.graph | gnuplot
+
+image::13.PNG[Login,1200,1200,align="center"]
+
+image::14.PNG[Login,700,1200,align="center"]
+
+image::15.PNG[Login,400,700,align="center"]
+
+ 
+=== HOG-Man (3D) KULLANIMI
+
+ $ bin/hogman3d -h
+
+image::16.PNG[Login,700,1200,align="center"]
+
+
+Artan biçimde bir 3B veri kümesini işleme::
+
+data/3D dizininden bir graph dosyası seçelim.
+
+ bin/hogman3d data/3D/sphere_smallnoise.graph
+
+image::17.PNG[Login,1200,1200,align="center"]
+
+
+Optimize Edicinin geçerli durumunu görselleştirmek için graph_viewer kullanabilirsiniz. Ayrıca, grafın durumunu bir dosyaya kayıt edilebilirsiniz.
+
+ bin/hogman3d -o output.graph -guiout data/3D/sphere_smallnoise.graph | bin/graph_viewer
+ 
+
+image::18.PNG[Login,1200,1200,align="center"]
+
+Bir 3B veri kümesinin toplu optimizasyonu::
+Bir veri kümesini çevrimdışı çalıştırmak için;
+
+ bin/hogman3d -guiout -batch -chol file-incrementally.graph | bin/graph_viewer
+ 
+=== Farklı Dataset kullanarak HOG-Man KULLANIMI
+ 
+ bin/hogman2d data/2D/farkligraph.txt
+ 
+image::19.PNG[Login,1200,1200,align="center"]
+
+image::20.PNG[Login,1200,1200,align="center"]
+
+ bin/hogman2d -o farkli-graph-ciktisi.graph -gnuout data/2D/farkligraph.txt | gnuplot
+
+image::21.PNG[Login,1200,1200,align="center"]
+
+image::22.PNG[Login,1200,1200,align="center"]
+
+bin/hogman2d -gnuout -batch -chol farkli-graph-ciktisi | gnuplot
+
+image::23.PNG[Login,1200,1200,align="center"]
+
+image::24.PNG[Login,700,1200,align="center"]
+
+
+==== farkli_graph_ciktisi.txt
+
+image::farkliekranciktisi.PNG[Login,300,400,align="center"]
+
+ 
+ 120201022 Mustafa Caner KOCADAĞ::
+ 130201041 Mehmet Furkan BAYRAKTAR::
+ 130201043 Deniz VURAL::
+ 130201023 Burak CİVELEK::
+ 
